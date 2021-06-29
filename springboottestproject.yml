@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: springboottestproject-cm
+data:
+  age: agevalue
+  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springboottestproject-svc
+spec:
+  type: NodePort
+  ports:
+    - targetPort: 9002
+      port: 80
+  selector:
+    app: springboottestproject-app
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboottestproject-app
+  labels:
+    app: springboottestproject-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springboottestproject-app
+  template:
+    metadata:
+      labels:
+        app: springboottestproject-app
+    spec:
+      containers:
+        - name: springboottestproject-app
+          image: dipra123/springboottestproject:0.0.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9002
+          env:
+            - name: age
+              valueFrom:
+                configMapKeyRef:
+                  name: springboottestproject-cm
+                  key: age
