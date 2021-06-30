@@ -15,14 +15,11 @@ public class SpringboottestprojectApplication {
 		SpringApplication.run(SpringboottestprojectApplication.class, args);
 	}
 	
-	@Value("${age}")
-	String age;
 	
 	@GetMapping("/greeting")
 	public String greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-		String value = "value passed as "+name+" age: "+age;
+		String value = "value passed as "+name;
 		 System.out.println(value);
-		 System.out.println(age);
 		 return value;
 	}
 	
